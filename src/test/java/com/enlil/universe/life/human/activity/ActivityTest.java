@@ -69,4 +69,17 @@ public class ActivityTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Sport("Empty", 5, 0));
         Assertions.assertThrows(IllegalArgumentException.class, () -> Activities.CHESS.kcalBurned(body, -1));
     }
+
+    @Test
+    @DisplayName("skiing and surfing should be moderate solo sports, manga sedentary reading")
+    void skiing_surfing_and_manga() {
+        Assertions.assertEquals(5.3, Activities.SKIING.getMetabolicEquivalent());
+        Assertions.assertEquals(Intensity.MODERATE, Activities.SKIING.getIntensity());
+        Assertions.assertFalse(Activities.SKIING.isTeamSport());
+        Assertions.assertEquals(3.0, Activities.SURFING.getMetabolicEquivalent());
+        Assertions.assertEquals(Intensity.MODERATE, Activities.SURFING.getIntensity());
+        Assertions.assertEquals(ActivityCategory.SPORT, Activities.SURFING.getCategory());
+        Assertions.assertEquals(Intensity.SEDENTARY, Activities.MANGA.getIntensity());
+        Assertions.assertEquals(ActivityCategory.INTELLECTUAL, Activities.MANGA.getCategory());
+    }
 }

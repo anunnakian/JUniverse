@@ -13,6 +13,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.MonthDay;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,6 +49,9 @@ public class Human extends Creature {
     /** Null when not disclosed. */
     @Getter(AccessLevel.NONE)
     private final Identity identity;
+    /** The day of the year they were born; null when unknown. */
+    @Getter(AccessLevel.NONE)
+    private final MonthDay birthday;
 
     /**
      * @param mother the biological mother, the parent who gave birth, assigned female whatever their gender; or
@@ -54,10 +59,11 @@ public class Human extends Creature {
      * @param father the biological father, the parent assigned male; or {@code null} if unknown
      * @param languages the languages this human knows, or {@code null} for none
      * @param identity their gender identity, orientation and pronouns, or {@code null} if not disclosed
+     * @param birthday the day of the year they were born, or {@code null} if unknown
      */
     @Builder
     public Human(Body body, BloodGenotype bloodGenotype, Physiognomy physiognomy, Mind mind, Human mother, Human father,
-                 List<LanguageSkill> languages, Identity identity) {
+                 List<LanguageSkill> languages, Identity identity, MonthDay birthday) {
         super("Homo sapiens", Kingdom.ANIMALIA, body.getMassKg());
         checkParent(mother, Sex.FEMALE, body);
         checkParent(father, Sex.MALE, body);
@@ -71,6 +77,7 @@ public class Human extends Creature {
         this.father = father;
         this.languages = languages == null ? List.of() : List.copyOf(languages);
         this.identity = identity;
+        this.birthday = birthday;
         if (this.languages.stream().map(LanguageSkill::getLanguage).distinct().count() != this.languages.size()) {
             throw new IllegalArgumentException("each language is known only once");
         }
@@ -145,12 +152,25 @@ public class Human extends Creature {
             }
         }
         updated.add(learned);
-        return new Human(body, genotype(), physiognomy, mind, mother, father, updated, identity);
+        return new Human(body, genotype(), physiognomy, mind, mother, father, updated, identity, birthday);
     }
 
     /** Their gender identity, sexual orientation and pronouns; empty if they did not disclose them. */
     public Optional<Identity> getIdentity() {
         return Optional.ofNullable(identity);
+    }
+
+    /** The day of the year they were born; empty if unknown. */
+    public Optional<MonthDay> getBirthday() {
+        return Optional.ofNullable(birthday);
+    }
+
+    /**
+     * The date of their birthday in the given year; a 29 February birthday falls on 28 February in common years. Empty
+     * if their birthday is unknown.
+     */
+    public Optional<LocalDate> birthdayIn(int year) {
+        return getBirthday().map(day -> day.atYear(year));
     }
 
     /** Whether this human disclosed a gender identity other than their sex assigned at birth. */

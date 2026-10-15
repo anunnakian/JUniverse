@@ -17,6 +17,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.MonthDay;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -45,6 +48,35 @@ public class HumanTest {
     void classification() {
         Assertions.assertEquals("Homo sapiens", human.getSpecies());
         Assertions.assertEquals(Kingdom.ANIMALIA, human.getKingdom());
+    }
+
+    private Human bornOn(MonthDay birthday) {
+        return Human.builder()
+                .body(new Body(Sex.FEMALE, 30, 1.65, 60))
+                .bloodGenotype(O_NEGATIVE)
+                .physiognomy(physiognomy)
+                .mind(mind)
+                .birthday(birthday)
+                .build();
+    }
+
+    @Test
+    @DisplayName("a human's birthday should be unknown unless given")
+    void no_birthday() {
+        Assertions.assertEquals(Optional.empty(), human.getBirthday());
+        Assertions.assertEquals(Optional.empty(), human.birthdayIn(2026));
+    }
+
+    @Test
+    @DisplayName("a birthday should fall on its day every year, a leap-day one on 28 February in common years")
+    void birthday() {
+        Human born14July = bornOn(MonthDay.of(Month.JULY, 14));
+        Human leapling = bornOn(MonthDay.of(Month.FEBRUARY, 29));
+
+        Assertions.assertEquals(Optional.of(LocalDate.of(2026, 7, 14)), born14July.birthdayIn(2026));
+        Assertions.assertEquals(Optional.of(LocalDate.of(2028, 2, 29)), leapling.birthdayIn(2028));
+        Assertions.assertEquals(Optional.of(LocalDate.of(2026, 2, 28)), leapling.birthdayIn(2026));
+        Assertions.assertEquals(born14July.getBirthday(), born14July.learn(Languages.ENGLISH, 10).getBirthday());
     }
 
     @Test

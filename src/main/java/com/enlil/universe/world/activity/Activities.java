@@ -9,7 +9,7 @@ import com.enlil.universe.life.human.activity.Sport;
 
 /**
  * Real activities, with their metabolic equivalents from the Compendium of Physical Activities (Ainsworth et al.,
- * 2011). Where the Compendium has no exact entry (stargazing, theatre), the closest one is used.
+ * 2011). Where the Compendium has no exact entry (stargazing, theatre, manga), the closest one is used.
  */
 public final class Activities {
 
@@ -27,6 +27,10 @@ public final class Activities {
     public static final Sport BOXING = new Sport("Boxing", 7.8, 1);
     public static final Sport JUDO = new Sport("Judo", 10.3, 1);
     public static final Sport YOGA = new Sport("Yoga", 2.5, 1);
+    /** Downhill skiing, alpine, at moderate effort. */
+    public static final Sport SKIING = new Sport("Skiing", 5.3, 1);
+    /** Surfing, body or board. */
+    public static final Sport SURFING = new Sport("Surfing", 3.0, 1);
 
     // Outdoors
     public static final Activity HIKING = new Pastime("Hiking", ActivityCategory.OUTDOOR, 6.0);
@@ -53,6 +57,8 @@ public final class Activities {
     public static final Activity CHESS = new Pastime("Chess", ActivityCategory.GAME, 1.5);
     public static final Activity VIDEO_GAMES = new Pastime("Video games", ActivityCategory.GAME, 1.0);
     public static final Activity READING = new Pastime("Reading", ActivityCategory.INTELLECTUAL, 1.3);
+    /** Reading Japanese comics, as sitting and reading (the Compendium has no entry for comics). */
+    public static final Activity MANGA = new Pastime("Manga", ActivityCategory.INTELLECTUAL, 1.3);
     public static final Activity WRITING = new Pastime("Writing", ActivityCategory.INTELLECTUAL, 1.3);
     public static final Activity COOKING = new Pastime("Cooking", ActivityCategory.HOME, 2.0);
 
