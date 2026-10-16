@@ -22,6 +22,21 @@ public class Star extends CelestialBody {
         return SpectralClass.fromTemperature(surfaceTemperatureKelvin);
     }
 
+    /**
+     * Temperature a planet of this star would have as a black body in radiative equilibrium, without any greenhouse
+     * effect, in kelvins: T★ · √(R★ / 2a) · (1 − A)^¼, with a the planet's semi-major axis.
+     *
+     * @param bondAlbedo share of the starlight the planet reflects, in [0, 1)
+     */
+    public double equilibriumTemperatureKelvin(Planet planet, double bondAlbedo) {
+        if (bondAlbedo < 0 || bondAlbedo >= 1) {
+            throw new IllegalArgumentException("albedo must be in [0, 1)");
+        }
+        double distanceMeters = planet.getSemiMajorAxisAu() * PhysicalConstants.AU;
+        return surfaceTemperatureKelvin * Math.sqrt(getRadiusMeters() / (2 * distanceMeters))
+                * Math.pow(1 - bondAlbedo, 0.25);
+    }
+
     /** Orbital period of a planet around this star, in days, from Kepler's third law. */
     public double orbitalPeriodDays(Planet planet) {
         return planet.getOrbit().periodDays(getMassKg() + planet.getMassKg());

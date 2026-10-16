@@ -11,6 +11,9 @@ import com.enlil.universe.civilization.KardashevType;
 import com.enlil.universe.civilization.economy.Money;
 import com.enlil.universe.civilization.occupation.Warrior;
 import com.enlil.universe.civilization.polity.Polity;
+import com.enlil.universe.geoscience.Atmosphere;
+import com.enlil.universe.geoscience.GeologicRank;
+import com.enlil.universe.geoscience.Interior;
 import com.enlil.universe.life.Creature;
 import com.enlil.universe.life.Kingdom;
 import com.enlil.universe.life.human.AboAllele;
@@ -45,6 +48,8 @@ import com.enlil.universe.world.chemistry.Compounds;
 import com.enlil.universe.world.chemistry.Mixtures;
 import com.enlil.universe.world.chemistry.Reactions;
 import com.enlil.universe.world.economy.Currencies;
+import com.enlil.universe.world.geoscience.GeologicTimeScale;
+import com.enlil.universe.world.geoscience.TectonicPlates;
 import com.enlil.universe.world.language.Languages;
 
 import java.time.Duration;
@@ -239,6 +244,25 @@ public class Main
         System.out.printf("Vinegar (0.83 M acetic acid) has a pH of %.2f; air weighs %.2f g/mol%n",
                 new Solution(Compounds.ACETIC_ACID, Compounds.WATER, 0.83).ph(),
                 Mixtures.DRY_AIR.molarMassGramsPerMole());
+
+        // Earth sciences: the Earth inside and out, and the age we live in
+        Interior interior = earth.getInterior().orElseThrow();
+        Atmosphere air = earth.getAtmosphere().orElseThrow();
+        System.out.printf("%nThe Earth from the center out: %s, adding up to %.3g kg%n",
+                interior.getLayers().stream()
+                        .map(layer -> layer.getName() + " (" + layer.getState().name().toLowerCase() + ")")
+                        .toList(),
+                interior.massKg());
+        System.out.printf("Its air thins out by e every %.1f km; on Everest it is down to %.0f kPa%n",
+                air.scaleHeightMeters(earth.surfaceGravity()) / 1_000,
+                air.pressureAtPascals(8_849, earth.surfaceGravity()) / 1_000);
+        System.out.printf("Its greenhouse effect warms it by %.0f K, from %.0f K to %.0f K%n",
+                air.greenhouseWarmingKelvin(sun.equilibriumTemperatureKelvin(earth, Earth.BOND_ALBEDO)),
+                sun.equilibriumTemperatureKelvin(earth, Earth.BOND_ALBEDO), air.getMeanSurfaceTemperatureKelvin());
+        System.out.printf("We live in the %s period of the %s era; the Atlantic widens 1 km every %.0f years%n",
+                GeologicTimeScale.at(0, GeologicRank.PERIOD).orElseThrow(),
+                GeologicTimeScale.at(0, GeologicRank.ERA).orElseThrow(),
+                TectonicPlates.MID_ATLANTIC_RIDGE.yearsToWiden(1));
 
         // Simulate the Solar System: where the planets are now, and when they come closest to the Earth
         Instant now = Instant.now();

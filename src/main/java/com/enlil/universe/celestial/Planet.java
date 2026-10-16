@@ -1,11 +1,14 @@
 package com.enlil.universe.celestial;
 
 import com.enlil.universe.civilization.Civilization;
+import com.enlil.universe.geoscience.Atmosphere;
+import com.enlil.universe.geoscience.Interior;
 import com.enlil.universe.life.Creature;
 import lombok.Getter;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class Planet extends CelestialBody {
@@ -58,5 +61,15 @@ public class Planet extends CelestialBody {
     /** Weight of the given creature on this planet's surface, in newtons. */
     public double weightNewtons(Creature creature) {
         return creature.weightNewtons(surfaceGravity());
+    }
+
+    /** The gas envelope of this planet; empty unless a real planet overrides it. */
+    public Optional<Atmosphere> getAtmosphere() {
+        return Optional.empty();
+    }
+
+    /** The layers inside this planet; empty unless a real planet overrides it. */
+    public Optional<Interior> getInterior() {
+        return Optional.empty();
     }
 }
