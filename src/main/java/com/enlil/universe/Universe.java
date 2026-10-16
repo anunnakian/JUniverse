@@ -22,6 +22,13 @@ public class Universe implements BigBangFlow<List<CelestialObject>> {
                 .toList();
     }
 
+    /** All the black holes of the galaxies of this universe, central ones included. */
+    public List<BlackHole> getBlackHoles() {
+        return galaxies.stream()
+                .flatMap(galaxy -> galaxy.getBlackHoles().stream())
+                .toList();
+    }
+
     /** All the planets orbiting the stars of this universe. */
     public List<Planet> getPlanets() {
         return galaxies.stream()

@@ -1,5 +1,6 @@
 package com.enlil.universe;
 
+import com.enlil.universe.celestial.BlackHole;
 import com.enlil.universe.celestial.Galaxy;
 import com.enlil.universe.celestial.NaturalSatellite;
 import com.enlil.universe.celestial.OrbitalPosition;
@@ -105,7 +106,8 @@ public class Main
         Sun sun = new Sun(List.of(
                 new Mercury(), new Venus(), earth, new Mars(),
                 new Jupiter(), new Saturn(), new Uranus(), new Neptune()));
-        MilkyWay milkyWay = new MilkyWay(List.of(sun, new AlphaCentauriA(), new ProximaCentauri(), new Sirius()));
+        MilkyWay milkyWay = new MilkyWay(List.of(sun, new AlphaCentauriA(), new ProximaCentauri(), new Sirius()),
+                List.of(new SiriusB(), new CrabPulsar(), new CygnusX1()));
 
         Universe universe = Universe.builder()
                 .galaxy(milkyWay)
@@ -263,6 +265,21 @@ public class Main
                 GeologicTimeScale.at(0, GeologicRank.PERIOD).orElseThrow(),
                 GeologicTimeScale.at(0, GeologicRank.ERA).orElseThrow(),
                 TectonicPlates.MID_ATLANTIC_RIDGE.yearsToWiden(1));
+
+        // Stars shine, age and die; some leave black holes behind
+        System.out.printf("%nThe Sun shines %.3g W (magnitude %.2f), lives %.0f billion years on the main sequence,"
+                        + " and will end as a %s%n",
+                sun.luminosityWatts(), sun.absoluteBolometricMagnitude(), sun.mainSequenceLifetimeYears() / 1e9,
+                sun.getFate().name().toLowerCase().replace('_', ' '));
+        System.out.printf("Its habitable zone spans %.2f to %.2f AU: the Earth is in it (%b), Mars is not (%b)%n",
+                sun.getHabitableZone().getInnerEdgeAu(), sun.getHabitableZone().getOuterEdgeAu(),
+                sun.getHabitableZone().contains(earth),
+                sun.getHabitableZone().contains(sun.getPlanets().get(3)));
+        for (BlackHole blackHole : universe.getBlackHoles()) {
+            System.out.printf("  %s: %.3g solar masses, event horizon %.3g km%s%n", blackHole.getName(),
+                    blackHole.massSolar(), blackHole.schwarzschildRadiusMeters() / 1_000,
+                    blackHole.isSupermassive() ? ", supermassive" : "");
+        }
 
         // Simulate the Solar System: where the planets are now, and when they come closest to the Earth
         Instant now = Instant.now();

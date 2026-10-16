@@ -5,10 +5,10 @@ import com.enlil.universe.celestial.GalaxyType;
 
 import java.util.List;
 
-/** A galaxy of the Local Group; its stars are not modeled individually. */
+/** A galaxy of the Local Group; its stars are not modeled individually, only its central black hole. */
 public class Andromeda extends Galaxy {
 
     public Andromeda() {
-        super("Andromeda", GalaxyType.SPIRAL, List.of());
+        super("Andromeda", GalaxyType.SPIRAL, List.of(), List.of(), new M31Star());
     }
 }
