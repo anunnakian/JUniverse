@@ -36,8 +36,14 @@ import com.enlil.universe.life.human.identity.SexualOrientation;
 import com.enlil.universe.life.human.language.LanguageSkill;
 import com.enlil.universe.life.human.sleep.Sleep;
 import com.enlil.universe.life.human.sleep.SleepStage;
+import com.enlil.universe.matter.ChemicalElement;
+import com.enlil.universe.matter.chemistry.Reaction;
+import com.enlil.universe.matter.chemistry.Solution;
 import com.enlil.universe.world.*;
 import com.enlil.universe.world.activity.Activities;
+import com.enlil.universe.world.chemistry.Compounds;
+import com.enlil.universe.world.chemistry.Mixtures;
+import com.enlil.universe.world.chemistry.Reactions;
 import com.enlil.universe.world.economy.Currencies;
 import com.enlil.universe.world.language.Languages;
 
@@ -222,6 +228,17 @@ public class Main
         System.out.printf("%s saved today buy %s worth of today's goods in 10 years at 2%% inflation;"
                         + " prices double every %.0f years%n",
                 savings, savings.purchasingPowerAfter(0.02, 10), Money.yearsToDoublePrices(0.02));
+
+        // Chemistry: what the Earth's water, fuel, vinegar and air are made of
+        Reaction combustion = Reactions.METHANE_COMBUSTION;
+        System.out.printf("%nWater (%s) weighs %.3f g/mol; %d chemical elements are known%n",
+                Compounds.WATER.getFormula(), Compounds.WATER.molarMassGramsPerMole(), ChemicalElement.values().length);
+        System.out.printf("Burning natural gas: %s releases %.0f kJ/mol; 1 kg of methane gives %.0f g of CO2%n",
+                combustion, -combustion.enthalpyKjPerMole(),
+                combustion.massGrams(Compounds.METHANE, 1_000, Compounds.CARBON_DIOXIDE));
+        System.out.printf("Vinegar (0.83 M acetic acid) has a pH of %.2f; air weighs %.2f g/mol%n",
+                new Solution(Compounds.ACETIC_ACID, Compounds.WATER, 0.83).ph(),
+                Mixtures.DRY_AIR.molarMassGramsPerMole());
 
         // Simulate the Solar System: where the planets are now, and when they come closest to the Earth
         Instant now = Instant.now();

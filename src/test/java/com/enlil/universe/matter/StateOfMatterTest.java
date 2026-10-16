@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class StateOfMatterTest {
 
     private static final double ROOM_TEMPERATURE_KELVIN = 293.15;
@@ -28,11 +31,12 @@ public class StateOfMatterTest {
     }
 
     @Test
-    @DisplayName("no modeled element should be liquid at room temperature (that's bromine and mercury)")
-    void no_liquid_at_room_temperature() {
-        for (ChemicalElement element : ChemicalElement.values()) {
-            Assertions.assertNotEquals(StateOfMatter.LIQUID, StateOfMatter.of(element, ROOM_TEMPERATURE_KELVIN), element.name());
-        }
+    @DisplayName("only bromine and mercury should be liquid at room temperature")
+    void liquids_at_room_temperature() {
+        Assertions.assertEquals(List.of(ChemicalElement.BROMINE, ChemicalElement.MERCURY),
+                Arrays.stream(ChemicalElement.values())
+                        .filter(element -> StateOfMatter.of(element, ROOM_TEMPERATURE_KELVIN) == StateOfMatter.LIQUID)
+                        .toList());
     }
 
     @Test

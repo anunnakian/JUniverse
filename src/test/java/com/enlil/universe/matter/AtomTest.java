@@ -96,6 +96,6 @@ public class AtomTest {
     @Test
     @DisplayName("should reject a nucleus of an unknown element")
     void reject_unknown_element() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Atom(new Nucleus(118, 176), 118));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Atom(new Nucleus(119, 180), 119));
     }
 }

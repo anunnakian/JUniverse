@@ -32,6 +32,11 @@ public enum Subshell {
         };
     }
 
+    /** The periodic table block of the elements whose last electron fills this subshell. */
+    public Block getBlock() {
+        return Block.of(type);
+    }
+
     /** Spectroscopic label, e.g. "2p". */
     public String getLabel() {
         return "" + shell + type;
