@@ -2,11 +2,16 @@ package com.enlil.universe;
 
 import com.enlil.universe.celestial.*;
 import com.enlil.universe.civilization.Civilization;
+import com.enlil.universe.cosmology.CosmologicalModel;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Singular;
+import lombok.ToString;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -14,6 +19,15 @@ public class Universe implements BigBangFlow<List<CelestialObject>> {
 
     @Singular
     private List<Galaxy> galaxies;
+    /** The model its expansion follows; null when none is given. */
+    @Getter(AccessLevel.NONE)
+    @ToString.Exclude
+    private CosmologicalModel cosmology;
+
+    /** The cosmological model this universe expands by, which gives its age; empty when none is given. */
+    public Optional<CosmologicalModel> getCosmology() {
+        return Optional.ofNullable(cosmology);
+    }
 
     /** All the stars of the galaxies of this universe. */
     public List<Star> getStars() {

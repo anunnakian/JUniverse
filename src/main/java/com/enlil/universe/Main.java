@@ -12,6 +12,10 @@ import com.enlil.universe.civilization.KardashevType;
 import com.enlil.universe.civilization.economy.Money;
 import com.enlil.universe.civilization.occupation.Warrior;
 import com.enlil.universe.civilization.polity.Polity;
+import com.enlil.universe.cosmology.CosmicCalendar;
+import com.enlil.universe.cosmology.CosmicEpoch;
+import com.enlil.universe.cosmology.CosmicEvent;
+import com.enlil.universe.cosmology.CosmologicalModel;
 import com.enlil.universe.geoscience.Atmosphere;
 import com.enlil.universe.geoscience.GeologicRank;
 import com.enlil.universe.geoscience.Interior;
@@ -48,6 +52,8 @@ import com.enlil.universe.world.activity.Activities;
 import com.enlil.universe.world.chemistry.Compounds;
 import com.enlil.universe.world.chemistry.Mixtures;
 import com.enlil.universe.world.chemistry.Reactions;
+import com.enlil.universe.world.cosmology.CosmicHistory;
+import com.enlil.universe.world.cosmology.Planck2018;
 import com.enlil.universe.world.economy.Currencies;
 import com.enlil.universe.world.geoscience.GeologicTimeScale;
 import com.enlil.universe.world.geoscience.TectonicPlates;
@@ -57,8 +63,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class Main
@@ -114,6 +122,7 @@ public class Main
                 .galaxy(new Andromeda())
                 .galaxy(new Triangulum())
                 .galaxy(new LargeMagellanicCloud())
+                .cosmology(new Planck2018())
                 .build();
 
         System.out.printf("The universe holds %d galaxies, %d modeled stars, %d planets and %d civilizations%n%n",
@@ -279,6 +288,18 @@ public class Main
             System.out.printf("  %s: %.3g solar masses, event horizon %.3g km%s%n", blackHole.getName(),
                     blackHole.massSolar(), blackHole.schwarzschildRadiusMeters() / 1_000,
                     blackHole.isSupermassive() ? ", supermassive" : "");
+        }
+
+        // Cosmology: how old the universe is, the epoch we live in, and its history squeezed into one year
+        CosmologicalModel cosmology = universe.getCosmology().orElseThrow();
+        CosmicCalendar calendar = new CosmicCalendar(cosmology);
+        System.out.printf("%nThe universe is %.3f billion years old; we live in the %s epoch: %s%n",
+                cosmology.ageYears() / 1e9, CosmicEpoch.atYears(cosmology.ageYears()),
+                CosmicEpoch.atYears(cosmology.ageYears()).getDescription());
+        System.out.printf("On the cosmic calendar, one second is %.0f years:%n", calendar.realYearsPerCalendarSecond());
+        for (CosmicEvent event : CosmicHistory.all()) {
+            System.out.printf("  %-28s %s%n", event.getName(),
+                    calendar.dateOf(event).format(DateTimeFormatter.ofPattern("d MMMM, HH:mm:ss", Locale.ENGLISH)));
         }
 
         // Simulate the Solar System: where the planets are now, and when they come closest to the Earth

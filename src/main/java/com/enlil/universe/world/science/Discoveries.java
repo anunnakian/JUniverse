@@ -62,11 +62,15 @@ public final class Discoveries {
             new Discovery("Expanding universe", Science.ASTRONOMY, "Georges Lemaître", 1927);
     public static final Discovery PENICILLIN =
             new Discovery("Penicillin", Science.MEDICINE, "Alexander Fleming", 1928);
+    public static final Discovery HUBBLE_LAW =
+            new Discovery("Velocity–distance relation of galaxies", Science.ASTRONOMY, "Edwin Hubble", 1929);
     public static final Discovery TURING_MACHINE =
             new Discovery("Turing machine", Science.COMPUTER_SCIENCE, "Alan Turing", 1936);
     public static final Discovery DNA_DOUBLE_HELIX =
             new Discovery("Double helix of DNA", Science.BIOLOGY,
                     "James Watson, Francis Crick and Rosalind Franklin", 1953);
+    public static final Discovery COSMIC_MICROWAVE_BACKGROUND =
+            new Discovery("Cosmic microwave background", Science.ASTRONOMY, "Arno Penzias and Robert Wilson", 1965);
     public static final Discovery BIG_FIVE =
             new Discovery("Five personality factors", Science.PSYCHOLOGY, "Ernest Tupes and Raymond Christal", 1961);
 

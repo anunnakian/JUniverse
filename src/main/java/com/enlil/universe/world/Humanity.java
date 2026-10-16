@@ -26,7 +26,8 @@ public class Humanity extends Civilization {
                         WEALTH_OF_NATIONS, DEEP_TIME, CONSERVATION_OF_MASS, NATURAL_SELECTION, MENDELIAN_INHERITANCE,
                         PERIODIC_TABLE, RABIES_VACCINE, SOCIAL_FACTS, RADIOACTIVITY, ABO_BLOOD_GROUPS,
                         INTELLIGENCE_TEST, BOHR_ATOM, GENERAL_RELATIVITY, STRUCTURAL_LINGUISTICS, PRIMEVAL_ATOM,
-                        PENICILLIN, TURING_MACHINE, DNA_DOUBLE_HELIX, BIG_FIVE),
+                        PENICILLIN, HUBBLE_LAW, TURING_MACHINE, DNA_DOUBLE_HELIX, BIG_FIVE,
+                        COSMIC_MICROWAVE_BACKGROUND),
                 List.of(new Doctor(), new Engineer(), new Teacher(), new Firefighter(), new Soldier(),
                         new PoliceOfficer(), new FbiSpecialAgent(), new SecretAgent(), new Knight(), new Samurai(),
                         new Legionary()));
